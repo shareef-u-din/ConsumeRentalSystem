@@ -9,6 +9,11 @@ namespace RentalSystem.Helper
 {
     public static class ApiHelper
     {
+        /// <summary>
+        /// Used to get IEnumerable<T> data from api of the generic class
+        /// </summary>
+        /// <param name="url">api url</param>
+        /// <param name="controllerAndOrAction">The remaining part of api url like action and/or controller</param>
         public static IEnumerable<T> GetDataFromApi<T>(string url, string controllerAndOrAction)
         {
             IEnumerable<T> list = null;
@@ -45,7 +50,11 @@ namespace RentalSystem.Helper
             return list;
         }
 
-
+        /// <summary>
+        /// Used to  get object from api of the generic class type <T>
+        /// </summary>
+        /// <param name="url">api url</param>
+        /// <param name="controllerAndOrAction">The remaining part of api url like action and/or controller</param>
         public static T GetFromApi<T>(T Tobject, string url, string controllerAndOrAction)
         {
             try
@@ -80,6 +89,13 @@ namespace RentalSystem.Helper
             }
             return Tobject;
         }
+
+        /// <summary>
+        /// Used to post object of generic class<T> to api
+        /// </summary>
+        /// <param name="Tobject">The generic object</param>
+        /// <param name="url">api url</param>
+        /// <param name="controllerAndOrAction">The remaining part of api url like action and/or controller</param>
         public static T Add<T>(T Tobject, string url, string controllerAndOrAction)
         {
             try

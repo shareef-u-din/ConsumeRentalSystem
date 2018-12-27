@@ -10,11 +10,15 @@ namespace RentalSystem.Helper
 {
     public static class UserManager
     {
-        public static Task<UserLoginViewModel> CreateUser(UserLoginViewModel user)
+        /// <summary>
+        /// Used to  register user
+        /// </summary>
+        /// <param name="user">The UserLoginViewModel object</param>
+        internal static Task<UserLoginViewModel> CreateUser(UserLoginViewModel user)
         {
             try
             {
-                user=ApiHelper.Add<UserLoginViewModel>(user, URL.LocalIISURL, "adduser");
+                user = ApiHelper.Add<UserLoginViewModel>(user, URL.LocalIISURL, "adduser");
             }
             catch (Exception e)
             {
@@ -25,6 +29,10 @@ namespace RentalSystem.Helper
             return Task.FromResult(user);
         }
 
+        /// <summary>
+        /// Used to  login user
+        /// </summary>
+        /// <param name="user">The UserLoginViewModel object</param>
         internal static Task<UserLoginViewModel> Login(UserLoginViewModel user)
         {
             try
