@@ -20,6 +20,7 @@ namespace RentalSystem.Controllers
             return View();
         }
 
+        // GET: AllCustomers
         public ActionResult AllCustomers()
         {
 
@@ -65,7 +66,7 @@ namespace RentalSystem.Controllers
             return View();
         }
 
-        // POST: Admin/Create
+        // POST: Admin/Login
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
@@ -100,49 +101,7 @@ namespace RentalSystem.Controllers
             return RedirectToAction("Login");
         }
 
-        // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: Admin/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
         // GET: Admin
         public ActionResult Vendor(int id = 0)
         {
@@ -214,7 +173,6 @@ namespace RentalSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Update(UserUploadViewModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Update");
@@ -222,25 +180,8 @@ namespace RentalSystem.Controllers
             UserViewModel user = null;
             try
             {
-                user = new UserViewModel
-                {
-                    Id = model.Id,
-                    Email = model.Email,
-                    Name = model.Name,
-                    Contact = model.Contact,
-                    Age = model.Age,
-                    PaymentId = model.PaymentId,
-                    Address = model.Address,
-                    Valid = true
-                };
-
-                if (model.Photo != null)
-                    user.Photo = SaveImage(model.Photo);
-                else
-                    user.Photo = "";
-                user = ApiHelper.Add<UserViewModel>(user, URL.LocalIISURL, "update");
+                user = UpdateAdmin(model);
             }
-
             catch (Exception e)
             {
                 ExceptionLogging(e);
@@ -260,7 +201,10 @@ namespace RentalSystem.Controllers
             ViewBag.Status = false;
             return View();
         }
+
+
         #region SaveImage
+        //Save Image file
         private string SaveImage(HttpPostedFileBase file)
         {
             string fName = "";
@@ -281,7 +225,28 @@ namespace RentalSystem.Controllers
 
             return fName;
         }
-
+        //Update Admin Details
+        private UserViewModel UpdateAdmin(UserUploadViewModel model)
+        {
+            UserViewModel user = new UserViewModel
+            {
+                Id = model.Id,
+                Email = model.Email,
+                Name = model.Name,
+                Contact = model.Contact,
+                Age = model.Age,
+                PaymentId = model.PaymentId,
+                Address = model.Address,
+                Valid = true
+            };
+            if (model.Photo != null)
+                user.Photo = SaveImage(model.Photo);
+            else
+                user.Photo = "";
+            user = ApiHelper.Add<UserViewModel>(user, URL.LocalIISURL, "update");
+            return user;
+        }
+        //Log Exceptions
         private void ExceptionLogging(Exception e)
         {
             string actionName = "";
@@ -299,6 +264,52 @@ namespace RentalSystem.Controllers
             }
         }
         #endregion
+
+        // GET: Admin/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: Admin/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Admin/Edit/id
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: Admin/Edit/id
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
     }
 
 

@@ -25,6 +25,7 @@ namespace RentalSystem.Controllers
             return View(list.ToList());
         }
 
+        //Get Details of Product using productId
         [HttpGet]
         public ActionResult Details(int id = 0)
         {
@@ -54,12 +55,14 @@ namespace RentalSystem.Controllers
             return View(product);
         }
 
-
+        //Logout all active user
         public ActionResult LogOut()
         {
             Session.Clear();
             return RedirectToAction("Index");
         }
+
+        //Log Exceptions
         private void ExceptionLogging(Exception e)
         {
             string actionName = "";

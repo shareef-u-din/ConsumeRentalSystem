@@ -2,9 +2,7 @@
 using RentalSystem.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -32,7 +30,6 @@ namespace RentalSystem.Controllers.Vendor
         [ValidateAntiForgeryToken]
         public ActionResult UpdateVendor(UserUploadViewModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("UpdateVendor");
@@ -40,23 +37,7 @@ namespace RentalSystem.Controllers.Vendor
             UserViewModel user = null;
             try
             {
-                user = new UserViewModel
-                {
-                    Id = model.Id,
-                    Email = model.Email,
-                    Name = model.Name,
-                    Contact = model.Contact,
-                    Age = model.Age,
-                    PaymentId = model.PaymentId,
-                    Address = model.Address,
-                    Valid = true
-                };
-
-                if (model.Photo != null)
-                    user.Photo = SaveImage(model.Photo);
-                else
-                    user.Photo = "";
-                user = ApiHelper.Add<UserViewModel>(user, URL.LocalIISURL, "update");
+                user = UpdateVendorDetails(model);
             }
             catch (Exception e)
             {
@@ -77,12 +58,33 @@ namespace RentalSystem.Controllers.Vendor
             return View();
         }
 
+        //Update Vendor Details
+        private UserViewModel UpdateVendorDetails(UserUploadViewModel model)
+        {
+            UserViewModel user = new UserViewModel
+            {
+                Id = model.Id,
+                Email = model.Email,
+                Name = model.Name,
+                Contact = model.Contact,
+                Age = model.Age,
+                PaymentId = model.PaymentId,
+                Address = model.Address,
+                Valid = true
+            };
+            if (model.Photo != null)
+                user.Photo = SaveImage(model.Photo);
+            else
+                user.Photo = "";
+            user = ApiHelper.Add<UserViewModel>(user, URL.LocalIISURL, "update");
+            return user;
+        }
+
 
 
 
 
         // GET: /Vendor/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             bool loginFailed = Convert.ToBoolean(TempData["loginFailed"]);
@@ -106,7 +108,6 @@ namespace RentalSystem.Controllers.Vendor
         //
         // POST: /Vendor/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -143,7 +144,6 @@ namespace RentalSystem.Controllers.Vendor
 
         // POST: /Vendor/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(RegisterViewModel model)
         {
@@ -191,33 +191,6 @@ namespace RentalSystem.Controllers.Vendor
             return View();
         }
 
-        // GET: Vendor/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Vendor/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Vendor/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: Vendor/Edit/5
         public ActionResult Edit(int id = 0)
@@ -271,7 +244,7 @@ namespace RentalSystem.Controllers.Vendor
             AddProductViewModel prod = new AddProductViewModel();
             try
             {
-               ViewBag.Status = Convert.ToBoolean(TempData["ProductUpdateFailed"]);
+                ViewBag.Status = Convert.ToBoolean(TempData["ProductUpdateFailed"]);
                 product = ApiHelper.GetFromApi<ProductViewModel>(product, URL.LocalIISURL, "products/" + id);
                 if (product != null)
                 {
@@ -305,7 +278,6 @@ namespace RentalSystem.Controllers.Vendor
             {
                 return RedirectToAction("Update");
             }
-
             ProductViewModel product = null;
             try
             {
@@ -320,9 +292,8 @@ namespace RentalSystem.Controllers.Vendor
                 {
                     int.TryParse(Session["VendorId"].ToString(), out vendorId);
                 }
-
                 product.VendorId = vendorId;
-               product = ApiHelper.Add<ProductViewModel>(product, URL.LocalIISURL, "products/update");
+                product = ApiHelper.Add<ProductViewModel>(product, URL.LocalIISURL, "products/update");
             }
             catch (Exception e)
             {
@@ -333,9 +304,9 @@ namespace RentalSystem.Controllers.Vendor
                 return RedirectToAction("Index");
             }
             TempData["ProductUpdateFailed"] = true;
-
             return RedirectToAction("Update");
         }
+
         //GET Vendor/AddProduct
         [HttpGet]
         public ActionResult AddProduct()
@@ -388,7 +359,36 @@ namespace RentalSystem.Controllers.Vendor
             return View();
         }
 
-        #region SaveImages and GetCategories
+        //GET : All products
+        [HttpGet]
+        public ActionResult AllProducts()
+        {
+
+            return View();
+        }
+
+        //GET : All products on rent
+        [HttpGet]
+        public ActionResult AllRent()
+        {
+            int vendorId = Convert.ToInt32(Session["VendorId"]);
+            ViewBag.VendorId = vendorId;
+            if (vendorId == 0)
+                return RedirectToAction("Index");
+            return View();
+        }
+
+        //GET : Approve view
+        [HttpGet]
+        public ActionResult Approve()
+        {
+            int vendorId = Convert.ToInt32(Session["VendorId"]);
+            ViewBag.VendorId = vendorId;
+            if (vendorId == 0)
+                return RedirectToAction("Index");
+            return View();
+        }
+        #region SaveImages, GetCategories,Log Exceptions
         // return ProductModel object
         private ProductViewModel SaveImages(AddProductViewModel addProduct)
         {
@@ -422,22 +422,27 @@ namespace RentalSystem.Controllers.Vendor
             }
             if (imagesSavedSuccessfully)
             {
-                productViewModel = new ProductViewModel()
-                {
-                    Id=addProduct.Id,
-                    Name = addProduct.Name,
-                    Description = addProduct.Description,
-                    Image1 = addProduct.Image1,
-                    Image2 = addProduct.Image2,
-                    Image3 = addProduct.Image3,
-                    StartDate = addProduct.StartDate,
-                    EndDate = addProduct.EndDate,
-                    CategoryId = addProduct.CategoryId,
-                    UnitPrice = addProduct.UnitPrice
-                };
+                productViewModel = UpdateProductViewModel(addProduct);
             }
             return productViewModel;
 
+        }
+
+        private static ProductViewModel UpdateProductViewModel(AddProductViewModel addProduct)
+        {
+            return new ProductViewModel()
+            {
+                Id = addProduct.Id,
+                Name = addProduct.Name,
+                Description = addProduct.Description,
+                Image1 = addProduct.Image1,
+                Image2 = addProduct.Image2,
+                Image3 = addProduct.Image3,
+                StartDate = addProduct.StartDate,
+                EndDate = addProduct.EndDate,
+                CategoryId = addProduct.CategoryId,
+                UnitPrice = addProduct.UnitPrice
+            };
         }
 
         private string SaveImage(HttpPostedFileBase file)
@@ -476,38 +481,7 @@ namespace RentalSystem.Controllers.Vendor
             return list;
 
         }
-
-        #endregion
-
-
-
-        [HttpGet]
-        public ActionResult AllProducts()
-        {
-
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult AllRent()
-        {
-            int vendorId = Convert.ToInt32(Session["VendorId"]);
-            ViewBag.VendorId = vendorId;
-            if (vendorId == 0)
-                return RedirectToAction("Index");
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult Approve()
-        {
-            int vendorId = Convert.ToInt32(Session["VendorId"]);
-            ViewBag.VendorId = vendorId;
-            if (vendorId == 0)
-                return RedirectToAction("Index");
-            return View();
-        }
-
+        //Log Exceptions
         private void ExceptionLogging(Exception e)
         {
             string actionName = "";
@@ -522,6 +496,35 @@ namespace RentalSystem.Controllers.Vendor
             {
 
                 Log.Warn("Exception in ExceptionLogging Method inside Vendor Controller", ex);
+            }
+        }
+        #endregion
+
+        // GET: Vendor/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: Vendor/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Vendor/Create
+        [HttpPost]
+        public ActionResult Create(FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
             }
         }
 

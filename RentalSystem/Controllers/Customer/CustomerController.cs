@@ -15,7 +15,7 @@ namespace RentalSystem.Controllers.Customer
     {
 
         // GET: /Customer/Register
-        [AllowAnonymous]
+
         public ActionResult Register()
         {
             bool loginFailed = Convert.ToBoolean(TempData["CustomerLoginFailed"]);
@@ -39,7 +39,6 @@ namespace RentalSystem.Controllers.Customer
         //
         // POST: /Vendor/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -75,7 +74,6 @@ namespace RentalSystem.Controllers.Customer
 
         // POST: /Customer/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(RegisterViewModel model)
         {
