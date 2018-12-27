@@ -1,0 +1,230 @@
+﻿@model RentalSystem.Models.AddProductViewModel
+
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_LayoutVendor.cshtml";
+}
+
+
+<h3 class="font-weight-bold text-secondary">Update Item</h3>
+
+@{
+    bool status = ViewBag.Status;
+}
+
+@if (status)
+{
+    <div class="alert alert-danger alert-dismissible font-weight-bold">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Sorry!</strong> Couldn't update product. Try Again...
+    </div>
+}
+
+<input type="hidden" id="sDate" value="@Model.StartDate.ToShortDateString()" />
+<input type="hidden" id="eDate" value="@Model.EndDate.ToShortDateString()" />
+<input type="hidden" id="productId" value="@Model.Id" />
+<div class="center_Div">
+    @using (Html.BeginForm("Update", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @if (Model != null && Model.StartDate != null)
+                        {
+                            <div class="productimage font-weight-bold" style="margin:1px;">
+                                Previous Start Date : @Model.StartDate.ToShortDateString()
+                            </div>
+                        }
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @if (Model != null && Model.EndDate != null)
+                        {
+                            <div class="productimage font-weight-bold" style="margin:1px;">
+                                Previous End Date : @Model.EndDate.ToShortDateString()
+                            </div>
+                        }
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryId, "Category", new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "- Please Select -", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                    </div>
+                </div>
+            </div>
+            <br />
+            @{
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            @if (Model != null && Model.Image1 != null)
+                            {
+                                <input type="hidden" id="Image1" name="Image1" value="@Model.Image1" />
+                                <div class="productimage" style="margin:1px;">
+                                    <img alt="" src="../../Images/@Model.Image1" style="height:200px;width:300px">
+                                </div>
+                            }
+                            @Html.LabelFor(model => model.UploadImage1, htmlAttributes: new { @class = "control-label" })
+                            <input type="file" name="UploadImage1" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.UploadImage1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @if (Model != null && Model.Image2 != null)
+                            {
+                                <input type="hidden" id="Image2" name="Image2" value="@Model.Image2" />
+                                <div class="productimage" style="margin:1px;">
+                                    <img alt="" src="../../Images/@Model.Image2" style="height:200px;width:300px">
+                                </div>
+                            }
+                            @Html.LabelFor(model => model.UploadImage2, htmlAttributes: new { @class = "control-label" })
+                            <input type="file" name="UploadImage2" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.UploadImage2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @if (Model != null && Model.Image3 != null)
+                            {
+                                <input type="hidden" id="Image2" name="Image3" value="@Model.Image3" />
+                                <div class="productimage" style="margin:1px;">
+                                    <img alt="" src="../../Images/@Model.Image3" style="height:200px;width:300px">
+                                </div>
+                            }
+                            @Html.LabelFor(model => model.UploadImage3, htmlAttributes: new { @class = "control-label" })
+                            <input type="file" name="UploadImage3" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.UploadImage3, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, "Description", new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-md-12" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group button_position">
+                <input type="submit" value="Update" class="btn btn-primary btnposition float-right" />
+            </div>
+        </div>
+    }
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var sdate = $("#sDate");
+            var edate = $("#eDate");
+            var startFrom = $("#StartDate");
+            var endTo = $("#EndDate");
+            var pId = $("#productId");
+            startFrom.change(function () {
+                var sd = sdate.val();
+                var newsd = startFrom.val();
+                var diff = dateDiffInDays(new Date(sd), new Date(newsd));
+                if (diff > 0) {
+                    var productId = pId.val();
+                    var res = checkDates(newsd, 1, productId);
+                    if (res == 0) {
+                        alert("Cannot Change Date to this Value");
+                        startFrom.val("");
+                    }
+                }
+            });
+            endTo.change(function () {
+                var sd = edate.val();
+                var newsd = endTo.val();
+                var diff = dateDiffInDays(new Date(sd), new Date(newsd));
+                if (diff < 0) {
+                    var productId = pId.val();
+                    var res = checkDates(newsd, 2, productId);
+                    if (res == 0) {
+                        alert("Cannot Change Date to this Value");
+                        endTo.val("");
+                    }
+                }
+            });
+
+            const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+            // a and b are javascript Date objects
+            function dateDiffInDays(a, b) {
+                // Discard the time and time-zone information.
+                const utc1 = Date.UTC(a.getFullYear(), a.getMonth() + 1, a.getDate());
+                const utc2 = Date.UTC(b.getFullYear(), b.getMonth() + 1, b.getDate());
+                return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+            }
+
+            function checkDates(date, value, productId) {
+                var dataObject = {
+                    "date": date,
+                    "ProductId": productId,
+                    "Value": value
+                };
+
+                var rValue = 0;
+                $.ajax({
+                    type: "POST",
+                    url: "http://rentalsystem:96/api/sales/CheckDate",
+                    crossdomain: 'true',
+                    async: false,
+                    data: dataObject,
+                    datatype: 'json',
+                    success: function (data) {
+                        rValue = data;
+                    },
+
+                    error: function (xhr, status) {
+                        rValue = -1;
+                    }
+                });
+                return rValue;
+            }
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

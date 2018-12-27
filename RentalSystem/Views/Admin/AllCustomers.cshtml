@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*@{
+        int vendorId = 0;
+        if (Session["VendorId"] != null)
+        {
+            int.TryParse(Session["VendorId"].ToString(), out vendorId);
+        }
+    }*@
+<h2><strong>All Customers</strong></h2>
+<hr>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+<table id="products" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Customer Name</th>
+            <th>Customer Email</th>
+            <th>View Details</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+    {
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#products").DataTable({
+                "lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]],
+                "sPaginationType": "simple",
+                ajax: {
+                    type: "GET",
+                    url: "http://rentalsystem:96/api/Customers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data) {
+                            if (data == "")
+                                return "Not Available";
+                            else
+                                return data;
+                        }
+                    },
+
+                    {
+                        data: "email",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<a href='/Admin/Vendor/" + data + "' >View</a> ";
+                        }
+                    }
+
+                ]
+            });
+        });
+    </script>
+}

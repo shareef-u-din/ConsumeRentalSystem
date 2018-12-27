@@ -1,0 +1,148 @@
+﻿@model RentalSystem.Models.UserUploadViewModel
+
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int id = 0;
+    int vendorId = 0;
+    string email = null;
+    if (Session["AdminLoginId"] != null && Session["AdminEmail"] != null)
+    {
+
+        int.TryParse(Session["AdminLoginId"].ToString(), out id);
+        int.TryParse(Session["AdminId"].ToString(), out vendorId);
+        email = Session["AdminEmail"].ToString();
+    }
+
+}
+<input type="hidden" id="vendor-id" name="vendorId" value="@vendorId" />
+<h3 class="font-weight-bold">UPDATE</h3>
+@{
+    bool status = ViewBag.Status;
+    bool error = ViewBag.Error;
+}
+<hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-group">
+    <div class="center_Div">
+        <input type="hidden" id="vendor-update" value="@id" />
+        @if (status)
+        {
+            <div class="alert alert-success alert-dismissible font-weight-bold">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong>
+                Update Details Saved.
+            </div>
+        }
+        @if (error)
+        {
+            <div class="alert alert-danger alert-dismissible font-weight-bold">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong>
+                Update Not Successful.
+            </div>
+        }
+        @using (Html.BeginForm("Update", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="customer-update" name="Id" value="@id" />
+            <input type="hidden" id="customer-email" name="Email" value="@email" />
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "vendor-name", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", id = "vendor-contact", } })
+                            @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control", id = "vendor-age" } })
+                            @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentId, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.PaymentId, new { htmlAttributes = new { @class = "form-control", id = "vendor-paymentId" } })
+                            @Html.ValidationMessageFor(model => model.PaymentId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", id = "vendor-address" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <br />
+                        <br />
+                        <div class="card" style="width: 18rem;" id="vendor-image">
+
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label" })
+                            <input type="file" name="Photo" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div class="form-group button_position">
+                            <input type="submit" value="Update Profile" class="btn btn-primary btnposition" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            var vendorId = $("#vendor-id").val();
+            var name = $("#vendor-name");
+            var contact = $("#vendor-contact");
+            var paymentId = $("#vendor-paymentId");
+            var address = $("#vendor-address");
+            var age = $("#vendor-age");
+            var image = $("#vendor-image");
+            $.ajax({
+                type: "GET",
+                url: "http://rentalsystem:96/api/users/" + vendorId,
+                crossDomain: 'true',
+                dataType: 'json',
+                success: function (data) {
+
+                    name.val(data.name);
+                    contact.val(data.contact);
+                    paymentId.val(data.paymentId);
+                    address.val(data.address);
+                    age.val(data.age);
+                    if (data.photo == "")
+                        data.photo = 'default.jpg';
+                    image.prepend('<img class="card-img-top table-responsive" src="../Images/' + data.photo + '" alt="Card image cap" height="300" width="180" />');
+
+                },
+
+                error: function (xhr, status) {
+                    alert(status + " : Details not Found!");
+                    image.prepend('<img class="card-img-top table-responsive" src="../Images/default.jpg" alt="Card image cap" height="300" width="180" />');
+
+                },
+                complete: function (response) {
+                },
+
+
+            });
+        });
+    </script>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

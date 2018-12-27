@@ -1,0 +1,128 @@
+﻿body {
+    padding-bottom: 20px;
+    width:100% !important;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Set padding for top navbar */
+
+
+/*set div to center*/
+.center_Div {
+    align-items: center;
+}
+
+.DropDownList {
+    width: 280px;
+}
+
+/*style button*/
+.btnposition {
+    border: 1px solid;
+    border-color: #41cafc;
+    color: #41cafc;
+    font-weight: bold;
+    background-color: white;
+}
+
+.button_position {
+    text-align: center;
+    margin-right: 50px;
+}
+
+.hrsize {
+    border-top: 2px solid #66a3ff;
+}
+/*set datatable pagination*/
+a#products_previous.paginate_button.previous {
+    float: left;
+    border: 1px solid;
+    padding: 5px;
+    font-weight: bold;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+a#products_next.paginate_button.next {
+    border: 1px solid;
+    font-weight: bold;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-left: 27px;
+    padding-right: 27px;
+    padding-top: 3px;
+    padding-bottom: 8px;
+}
+
+div#products_info.dataTables_info {
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+
+.home-product-view-button {
+    border: 1px solid;
+    border-color:antiquewhite;
+    padding: 3px;
+    padding-bottom:1px;
+    border-radius: 10px;
+    font-weight:bold;
+}
+.home-product-view-button :hover {
+    border: 1px solid;
+    border-color: #41cafc;
+    color: #41cafc;
+    font-weight: bold;
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#home-products-explore-all:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+/*show product images input producr details page*/
+.productimagesview {
+    text-align: right;
+    padding-left: 50px;
+    margin: 2px;
+}
+
+
+div.dropdown-menu.dropdown-menu-right.float-right.show {
+    margin-top: 11px;
+}
+
+
+/*set footer background color*/
+.footer-style {
+    background-color: #000d1a;
+    color: wheat;
+}
+.bg-customer-color {
+    background-color: #000d1a !important;
+    color: wheat;
+}
+.home-index-custom{
+    margin-top:12px;
+}
+

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
+</head>
+<body>
+
+
+    <!-- top navbar starts -->
+
+    <nav class="navbar navbar-expand-md bg-customer-color bg-dark navbar-dark fixed-top" id="navbar">
+        <!-- Brand -->
+        <a class="navbar-brand offset-1 font-weight-bold" href="@Url.Action("Index","Home")">Online Rental System</a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            @*<div class="nav-item offset-2">
+                    <a class="nav-link text-white btn btn-success btn-sm" href="@Url.Action("Index","AddItems")">
+                        Post An Ad!
+                    </a>
+                </div>*@
+            <ul class="navbar-nav ml-auto">
+                @Html.Partial("_LoginPartial")
+            </ul>
+
+        </div>
+    </nav>
+    <!-- top navbar ends -->
+
+
+    @RenderBody()
+    <hr />
+
+    @Html.Partial("~/Views/Shared/_Footer.cshtml")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

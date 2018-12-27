@@ -1,0 +1,97 @@
+﻿@model RentalSystem.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    bool login = ViewBag.Login;
+    bool register = ViewBag.Register;
+    bool isPostBack = ViewBag.IsPostBack;
+}
+<br />
+<br />
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <p class="h3">Register</p>
+            <hr class="hrsize">
+            <p class="text-primary font-weight-bold">
+                Not our registered
+                customer yet?
+            </p>
+            <hr class="hrsize">
+            @if (register && isPostBack)
+            {
+                <div class="alert alert-success alert-dismissible font-weight-bold">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Success!</strong>
+                    Registration Successful!.
+                </div>
+            }
+            @if (isPostBack && !register)
+            {
+                <div class="alert alert-danger alert-dismissible font-weight-bold">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Sorry!</strong>
+                    Registration Failed!. Try Again..
+                </div>
+            }
+
+
+            @{
+
+            }
+            @using (Html.BeginForm("Register", "Customer", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Partial("~/Views/Account/_Register.cshtml", Model)
+                <div class="form-group button_position">
+                    <button class="btnposition" value="Submit">
+                        <i class="fas fa-user-plus"></i>&nbsp;REGISTER
+                    </button>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <p class="h3">Sign In</p>
+            <hr class="hrsize">
+            <p class="text-primary font-weight-bold">
+                Already Registered?
+            </p>
+            <hr class="hrsize">
+            @if (login)
+            {
+                <div class="alert alert-danger alert-dismissible font-weight-bold">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Sorry!</strong>
+                    Login Failed!. Email and/or password incorrect ...
+                </div>
+            }
+            @using (Html.BeginForm("Login", "Customer", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Partial("~/Views/Account/_Login.cshtml", Model)
+                <div class="form-group button_position">
+                    <button class="btnposition" value="Submit">
+                        <i class="fas fa-sign-in-alt"></i>&nbsp;LOGIN
+                    </button>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

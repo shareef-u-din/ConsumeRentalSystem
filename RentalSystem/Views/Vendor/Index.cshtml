@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ViewModels.ProductViewModel>
+
+@{
+    ViewBag.Title = "AllProducts";
+    Layout = "~/Views/Shared/_LayoutVendor.cshtml";
+}
+@{
+    int vendorId = 0;
+    if(Session["VendorId"] != null)
+    {
+        int.TryParse(Session["VendorId"].ToString(), out vendorId);
+    }
+}
+<h2><strong>All Products</strong></h2>
+<hr>
+<input type="hidden" id="vendor-allproducts-id" value="@vendorId" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+<table id="products" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>End Date</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+    {
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            var vendorId = $("#vendor-allproducts-id").val();
+
+            $("#products").DataTable({
+                "lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]],
+                "sPaginationType": "simple",
+                ajax: {
+                    type: "GET",
+                    url: "http://rentalsystem:96/api/products/all/" + vendorId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+
+                    },
+                    {
+                        data: "startDate",
+                        type: 'date',
+                        "render": function (data) {
+                            var date = new Date(data);
+                            var dd = date.getDate();
+
+                            var mm = date.getMonth() + 1;
+                            var yyyy = date.getFullYear();
+                            if (dd < 10) {
+                                dd = '0' + dd;
+                            }
+
+                            if (mm < 10) {
+                                mm = '0' + mm;
+                            }
+                            date = mm + '-' + dd + '-' + yyyy;
+                            return date;
+                        }
+                    },
+                    {
+                        data: "endDate",
+                        type: 'date',
+                        "render": function (data) {
+                            var date = new Date(data);
+                            var dd = date.getDate();
+
+                            var mm = date.getMonth() + 1;
+                            var yyyy = date.getFullYear();
+                            if (dd < 10) {
+                                dd = '0' + dd;
+                            }
+
+                            if (mm < 10) {
+                                mm = '0' + mm;
+                            }
+                            date = mm + '-' + dd + '-' + yyyy;
+                            return date;
+                        }
+                    },
+                    {
+                        data: "unitPrice",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<a href='/vendor/edit/" + data + "' >View</a> ";
+                        }
+                    }
+
+                ]
+            });
+        });
+    </script>
+}

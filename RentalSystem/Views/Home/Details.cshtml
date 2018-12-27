@@ -1,0 +1,306 @@
+﻿@model ViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<br />
+<div class="container">
+    <h3>Product Details</h3>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <br />
+            <div class="productimage">
+                <br />
+                <img alt="" src="../../Images/@Model.Image1" style="max-height:400px;max-width:300px">
+            </div>
+            <div class="font-weight-bold">
+                <br /><br />
+                <label>Product Name:&nbsp;&nbsp;</label><label id="productid">@Model.Name</label><br />
+                <label>Price Per Day:&nbsp;&nbsp;</label><label id="view-product-id-price">&#8377;&nbsp;@Model.UnitPrice</label>
+            </div>
+        </div>
+        <div class="col-md-6" align="center">
+            <br />
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Property</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label class="font-weight-bold">Price Per Day</label></td>
+                        <td><label class="font-weight-bold" id="view-product-price">@Model.UnitPrice</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="font-weight-bold"> Start Date</label></td>
+                        <td><label class="font-weight-bold" id="view-product-startdate">@Model.StartDate.ToShortDateString()</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="font-weight-bold"> End Date</label></td>
+                        <td> <label class="font-weight-bold" id="view-product-enddate">@Model.EndDate.ToShortDateString()</label></td>
+                    </tr>
+                    @*<tr>
+                            <td> <label class="font-weight-bold"> Category</label></td>
+                            <td> <label class="font-weight-bold" id="view-product-category">@Model.CategoryId</label></td>
+                        </tr>*@
+                    <tr>
+                        <td> <label class="font-weight-bold"> Available</label></td>
+                        <td> <label class="font-weight-bold" id="view-product-available">@Model.Availability</label></td>
+                    </tr>
+                    <tr>
+                        <td> <label class="font-weight-bold"> Description</label></td>
+                        <td> <label class="font-weight-bold" id="view-product-description">@Model.Description</label></td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+            <div class="row">
+
+                @{
+                    if (Model.Image2 == null)
+                    {
+                        Model.Image2 = "detailsquare3.jpg";
+                    }
+                    if (Model.Image3 == null)
+                    {
+                        Model.Image3 = "detailsquare3.jpg";
+                    }
+                }
+                <div class="productimagesview" id="image1">
+                    <img alt="" src="~/images/@Model.Image1"
+                         width=100 height=100>
+                </div>
+                <div class="productimagesview" id="image2">
+                    <img alt="" src="~/images/@Model.Image2"
+                         width=100 height=100>
+                </div>
+                <div class="productimagesview" id="image3">
+                    <img alt="" src="~/images/@Model.Image3"
+                         width=100 height=100>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <p class="font-weight-bold">Start Using Product from @Model.StartDate.ToShortDateString() to @Model.EndDate.ToShortDateString() (mm/dd/yyyy).</p>
+    <div align="center">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="hidden" name="VendorId" id="VendorId" value="@Model.VendorId" />
+                    <input type="hidden" name="categoryId" id="categoryId" value="@Model.CategoryId" />
+                    <input type="hidden" name="oldStartDate" id="oldStartDate" value="@Model.StartDate" />
+                    <input type="hidden" name="oldEndDate" id="oldEndDate" value="@Model.EndDate" />
+                    <input type="hidden" name="email" id="email" value="@ViewBag.Email" />
+                    <input type="hidden" name="unitPrice" id="unitPrice" value="@Model.UnitPrice" />
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <input type="hidden" name="Description" id="Description" value="@Model.Description" />
+                    <label style="text-align:left">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" name="StartDate">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label style="text-align:left">End Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="EndDate">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Total Cost:</label>
+                    <input type="text" class="form-control" readonly id="totalCost" name="Name" value="">
+                </div>
+            </div>
+            <div class="col-md-6 float-right">
+                <br />
+                @{
+                    bool logedIn = false;
+                    if (Session["CustomerLogIn"] != null)
+                    {
+                        logedIn = Convert.ToBoolean(Session["CustomerLogIn"].ToString());
+                    }
+                }
+                @*@if (!Model.Availability)
+                {
+                    <p class="text-info font-weight-bold">****NOT AVAILABLE****</p>
+                    <button disabled="disabled" class="navigationbutton bg-light text-primary text-center">
+                        <i class="fas fa-cart-plus"></i>&nbsp; <span id="addtocart">Rent It Now! &nbsp;<i class="fas fa-heart"></i></span>
+                    </button>
+                }*@
+                @if (!logedIn)
+                {
+                    <p class="text-info font-weight-bold">****Please login to proceed forward****</p>
+                    <button disabled="disabled" class="navigationbutton bg-light text-primary text-center">
+                        <i class="fas fa-cart-plus"></i>&nbsp; <span id="addtocart">Rent It Now! &nbsp;<i class="fas fa-heart"></i></span>
+                    </button>
+                }
+                @if (Model.Availability && logedIn)
+                {
+                    <button class="navigationbutton bg-light text-primary text-center"
+                            id="rightnavigate">
+                        <i class="fas fa-cart-plus"></i>&nbsp; <span id="addtocart">Rent It Now! &nbsp;<i class="fas fa-heart"></i></span>
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+
+    <p>
+
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var id = $("#Id");
+            var vendorId = $("#VendorId");
+            var oldStartDate = $("#oldStartDate");
+            var oldEndDate = $("#oldEndDate");
+            var category = $("#categoryId");
+            var totalCost = $("#totalCost");
+            var newStartDate = $("#startDate");
+            var newEndDate = $("#endDate");
+            var unitPrice = $("#unitPrice");
+            var email = $("#email");
+            var status = false;
+            var cost = 0;
+            var forward = 0;
+            newEndDate.click(function () {
+                if (newStartDate.val() == "") {
+                    alert("Select Start Date First!");
+                    return false;
+                }
+            });
+            newStartDate.change(function () {
+                var date1 = newStartDate.val();
+                if (date1 == "") {
+                    forward = 0;
+                    return false;
+                }
+                var oldsdate = oldStartDate.val();
+                var d = dateDiffInDays(new Date(oldsdate), new Date(date1));
+                if (d < 0) {
+                    newStartDate.val("");
+                    alert("Start Date must start from " + new Date(oldsdate));
+                    forward = 0;
+                    return false;
+                }
+            });
+            newEndDate.change(function () {
+                var date1 = newStartDate.val();
+                if (date1 == "") {
+                    forward = 0;
+                    return false;
+                }
+                var date2 = newEndDate.val();
+                var oldsdate = oldStartDate.val();
+                var oldedate = oldEndDate.val();
+                var d = dateDiffInDays(new Date(oldsdate), new Date(date1));
+                if (d < 0) {
+                    newStartDate.val("");
+                    newEndDate.val("");
+                    alert("Start Date must be in Range");
+                    forward = 0;
+                    return false;
+                }
+                var e = dateDiffInDays(new Date(oldedate), new Date(date2));
+                if (e > 0) {
+                    newEndDate.val("");
+                    alert("End Date is valid upto " + new Date(oldedate));
+                    forward = 0;
+                    return false;
+                }
+                var diff = dateDiffInDays(new Date(date1), new Date(date2));
+                if (diff <= 0) {
+                    alert("End Date must be greater than Start Date");
+                    newEndDate.val("");
+                    forward = 0;
+                    return false;
+                }
+                var charges = unitPrice.val();
+                var tc = diff * charges;
+                totalCost.val(tc.toString());
+                cost = tc;
+                status = true;
+            });
+
+
+
+
+            $("#rightnavigate").click(function () {
+                if (email.val() == "")
+                    return false;
+                if (status) {
+                    $("#rightnavigate").html("&#10004;&#10004; Product Added to List");
+                    $("#rightnavigate").attr("disabled", "disabled");
+                    callAjax();
+                } else {
+                    alert("Select Start Date and End Date First!!");
+                    return false;
+                }
+
+
+            });
+            function callAjax() {
+
+                var dataObject = {
+                    "ProductId": id.val(),
+                    "VendorId": vendorId.val(),
+                    "StartDate": newStartDate.val(),
+                    "EndDate": newEndDate.val(),
+                    "UnitCost": unitPrice.val(),
+                    "Email": email.val(),
+                    "TotalCost": cost,
+                    "CategoryId": category.val(),
+                    "Payment": true,
+                    "Status": true
+                };
+
+                $.ajax({
+                    type: "post",
+                    url: "http://rentalsystem:96/api/sales",
+                    crossdomain: 'true',
+                    async: 'false',
+                    data: dataObject,
+                    datatype: 'json',
+                    success: function (data) {
+                        alert("Product Added to List");
+                    },
+
+                    error: function (xhr, status) {
+                        alert(xhr);
+                    },
+                    complete: function (response) {
+                    },
+
+
+                });
+            }
+            const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+            // a and b are javascript Date objects
+            function dateDiffInDays(a, b) {
+                // Discard the time and time-zone information.
+                const utc1 = Date.UTC(a.getFullYear(), a.getMonth() + 1, a.getDate());
+                const utc2 = Date.UTC(b.getFullYear(), b.getMonth() + 1, b.getDate());
+                return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+            }
+
+        });
+
+    </script>
+}

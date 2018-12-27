@@ -1,0 +1,71 @@
+﻿@{
+    bool customerLogIn = false;
+    string customerEmail = null;
+    if (Session["CustomerLogIn"] != null)
+    {
+        customerLogIn = Convert.ToBoolean(Session["CustomerLogIn"]);
+        customerEmail = Convert.ToString(Session["CustomerEmail"]);
+    }
+    else if (Session["VendorLogIn"] != null)
+    {
+        customerLogIn = Convert.ToBoolean(Session["VendorLogIn"]);
+        customerEmail = Convert.ToString(Session["VendorEmail"]);
+    }
+    else if (Session["AdminLogIn"] != null)
+    {
+        customerLogIn = Convert.ToBoolean(Session["AdminLogIn"]);
+        customerEmail = Convert.ToString(Session["AdminEmail"]);
+    }
+}
+@if (customerLogIn)
+{
+    <li style="margin-top:11px;" class="text-white font-weight-bold">
+        @customerEmail!
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown" style="margin-top:3px; margin-right:30px;">
+        <a class="nav-link dropdown-toggle  text-white" href="#" id="navbardrop" data-toggle="dropdown">
+            <i class="fas fa-user-tie"></i>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right float-right" style="position:absolute;">
+
+            <a class="dropdown-item" href="@Url.Action("Index", "Customer")">Customer</a>
+
+
+            <a class="dropdown-item" href="@Url.Action("Index", "Vendor")">Vendor</a>
+
+            <a class="dropdown-item" href="@Url.Action("Index", "Admin")">Admin</a>
+
+            <a class="dropdown-item" href="@Url.Action("LogOut","Home")">LogOut</a>
+        </div>
+
+
+    </li>
+}
+else
+{ <li class="nav-item">
+        <a href="@Url.Action("Register", "Customer")" class="nav-link text-white">
+            <i class="fas fa-sign-in-alt text-secondary"></i>&nbsp;Sign Up
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="@Url.Action("Register", "Customer")" class="nav-link text-white">
+            <i class="fas fa-user text-secondary"></i>&nbsp;Sign In
+        </a>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" id="navbardrop" data-toggle="dropdown">
+            <i class="fas fa-user-tie"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right float-right" style="position:absolute;">
+            <a class="dropdown-item" href="@Url.Action("Login", "Admin")">Admin</a>
+            <a class="dropdown-item" href="@Url.Action("Register", "Vendor")">Vendor</a>
+        </div>
+    </li>
+
+}
+
+

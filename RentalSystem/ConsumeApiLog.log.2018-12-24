@@ -1,0 +1,9 @@
+2018-12-24 23:00:06,366 FATAL MonitoringLogger - Admin Detials : 40 - 44
+System.DivideByZeroException: Attempted to divide by zero.
+   at RentalSystem.Controllers.AdminController.Details(Int32 id) in D:\DEMOAPP\ConsumeRentalSystem\RentalSystem\Controllers\Admin\AdminController.cs:line 39
+2018-12-24 23:07:02,089 FATAL MonitoringLogger - Action :details Controller :admin
+System.DivideByZeroException: Attempted to divide by zero.
+   at RentalSystem.Controllers.AdminController.Details(Int32 id) in D:\DEMOAPP\ConsumeRentalSystem\RentalSystem\Controllers\Admin\AdminController.cs:line 39
+2018-12-24 23:36:33,238 FATAL MonitoringLogger - Controller :admin Action :details
+System.DivideByZeroException: Attempted to divide by zero.
+   at RentalSystem.Controllers.AdminController.Details(Int32 id) in D:\DEMOAPP\ConsumeRentalSystem\RentalSystem\Controllers\Admin\AdminController.cs:line 35

@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ViewModels.ProductViewModel>
+@{
+    ViewBag.Title = "Approve";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<h2><strong>All Waiting Requests</strong></h2>
+<hr>
+@{
+    int id = 0;
+    string email = "";
+    if (Session["CustomerEmail"] != null)
+    {
+        email = Convert.ToString(Session["CustomerEmail"]);
+        int.TryParse(Session["CustomerId"].ToString(), out id);
+    }
+}
+<input type="hidden" id="customer-rent-products" value="@id" />
+<input type="hidden" id="customer-rent-products-email" value="@email" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+<table id="products" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Unit Price</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+    {
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var id = $("#customer-rent-products").val();
+            var eml = $("#customer-rent-products-email").val();
+            var obj = {
+                "Email": JSON.stringify(eml)
+            };
+            let totalAmount = 0;
+            $("#products").DataTable({
+                "lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]],
+                "sPaginationType": "simple",
+
+                ajax: {
+                    type: "GET",
+                    async: 'false',
+                    data: obj,
+                    datatype: 'json',
+                    url: "http://rentalsystem:96/api/sales/rent/approve",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "email",
+                    },
+                    {
+                        data: "startDate",
+                        type: 'date',
+                        "render": function (data) {
+                            var date = new Date(data);
+                            var dd = date.getDate();
+
+                            var mm = date.getMonth() + 1;
+                            var yyyy = date.getFullYear();
+                            if (dd < 10) {
+                                dd = '0' + dd;
+                            }
+
+                            if (mm < 10) {
+                                mm = '0' + mm;
+                            }
+                            date = mm + '-' + dd + '-' + yyyy;
+                            return date;
+                        }
+                    },
+                    {
+                        data: "endDate",
+                        type: 'date',
+                        "render": function (data) {
+                            var date = new Date(data);
+                            var dd = date.getDate();
+
+                            var mm = date.getMonth() + 1;
+                            var yyyy = date.getFullYear();
+                            if (dd < 10) {
+                                dd = '0' + dd;
+                            }
+
+                            if (mm < 10) {
+                                mm = '0' + mm;
+                            }
+                            date = mm + '-' + dd + '-' + yyyy;
+                            return date;
+                        }
+                    },
+                    {
+                        data: "unitCost",
+                    },
+                    {
+                        data: "totalCost",
+                        //render: function (data) {
+                        //    var amt = parseInt(data, 10);
+                        //    totalAmount = totalAmount + amt;
+                        //    return data;
+                        //}
+                    },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return '<span class="btn-link text-danger font-weight-bold" style="disabled:true;text-decoration: none;">Pending</span>';
+                        }
+                    }
+
+                ]
+            });
+        });
+    </script>
+}

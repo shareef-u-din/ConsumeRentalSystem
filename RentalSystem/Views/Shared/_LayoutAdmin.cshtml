@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
+
+
+
+
+
+
+</head>
+<body>
+    @{
+        bool logIn = false;
+        string eml = null;
+        if (Session["AdminLogIn"] != null)
+        {
+            logIn = Convert.ToBoolean(Session["AdminLogIn"]);
+        }
+
+        if (!logIn)
+        {
+
+            Response.Redirect("/Admin/Login", true);
+        }
+        if (Session["AdminEmail"] != null)
+        {
+            eml = Convert.ToString(Session["AdminEmail"]);
+        }
+        string img = null;
+        if (Session["AdminImage"] != null)
+        {
+            img = Convert.ToString(Session["AdminImage"]);
+        }
+        if (String.IsNullOrEmpty(img))
+        {
+            img = "default.jpg";
+        }
+    }
+    <!-- top navbar starts -->
+
+    <nav class="navbar navbar-expand-lg bg-customer-color navbar-dark fixed-top">
+        <!-- Brand -->
+        <a class="navbar-brand offset-1 font-weight-bold" href="@Url.Action("Index","Home")">Online Rental System</a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            @*<div class="nav-item offset-2">
+                    <a class="nav-link text-white btn btn-success btn-sm" href="@Url.Action("Index","AddItems")">
+                        Post An Ad!
+                    </a>
+                </div>*@
+            <ul class="navbar-nav ml-auto">
+
+
+                <li style="margin-top:11px;" class="text-white font-weight-bold">
+                    @eml!
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown" style="margin-top:3px;">
+                    <a class="nav-link dropdown-toggle  text-white" href="#" id="navbardrop" data-toggle="dropdown">
+                        <i class="fas fa-user-tie"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right float-right" style="position:absolute;">
+                        <a class="dropdown-item dropleft" href="@Url.Action("LogOut","Admin")">SignOut</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <!-- top navbar ends -->
+    <!-- Vendor navbar starts -->
+    <div class="" style="background-color: #e9ecef;margin-top:56px;">
+        <div class="offset-1">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index","Admin")">
+                        <img class="rounded-circle card-img-top" src="~/Images/@img" style="width:40px;height:40px;">&nbsp;All Vendors
+                    </a>
+                </li>
+                <li class="breadcrumb-item" style="margin-top:7px;"><a href="@Url.Action("AllCustomers","Admin")">All Customers</a></li>
+                <li class="breadcrumb-item" style="margin-top:7px;"><a href="@Url.Action("Update","Admin")">Update Details</a></li>
+            </ol>
+
+        </div>
+    </div>
+    <!-- Vendor navbar ends -->
+    <br />
+    <br />
+    <div class="container">
+        @RenderBody()
+    </div>
+    <hr />
+
+    @Html.Partial("~/Views/Shared/_Footer.cshtml");
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

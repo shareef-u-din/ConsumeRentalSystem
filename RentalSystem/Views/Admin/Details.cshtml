@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3 style="margin-top: -26px;">Vendor Details</h3>
+
+@*@{
+        int vendorId = 0;
+        if (Session["VendorId"] != null)
+        {
+            int.TryParse(Session["VendorId"].ToString(), out vendorId);
+        }
+    }*@
+<hr>
+<input type="hidden" id="admin-vendor-id" value="@ViewBag.Id" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">,<p class="font-weight-bold h5 text-secondary">All Products By Vendor.</p></div>
+        <div class="col-md-6 float-right">
+            <br />
+            <a href="@Url.Action("Vendor","Admin",new { id=ViewBag.Id})" class="btn btn-outline-info float-right">
+                <i class="fas fa-street-view"></i>&nbsp;View Vendor
+            </a>
+        </div>
+    </div>
+</div>
+<table id="products" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>View Product</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+    {
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            var vendorId = $("#admin-vendor-id").val();
+
+            $("#products").DataTable({
+                "lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]],
+                "sPaginationType": "simple",
+                ajax: {
+                    type: "GET",
+                    url: "http://rentalsystem:96/api/products/all/" + vendorId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<a href='/Admin/ProductDetails/" + data + "' >View</a> ";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

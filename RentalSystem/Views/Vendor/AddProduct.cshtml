@@ -1,0 +1,116 @@
+﻿@model RentalSystem.Models.AddProductViewModel
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_LayoutVendor.cshtml";
+}
+
+
+<h3 class="font-weight-bold text-secondary">Add Item</h3>
+
+@{
+    bool status = ViewBag.Status;
+}
+
+@if (status)
+{
+    <div class="alert alert-danger alert-dismissible font-weight-bold">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Sorry!</strong> Couldn't add product. Try Again...
+    </div>
+}
+<div class="center_Div">
+    @using (Html.BeginForm("AddProduct", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryId, "Category", new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "- Please Select -", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UploadImage1, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="UploadImage1" accept="image/x-png,image/gif,image/jpeg" class="form-control" required />
+                        @Html.ValidationMessageFor(model => model.UploadImage1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UploadImage2, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="UploadImage2" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.UploadImage2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UploadImage3, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="UploadImage3" accept="image/x-png,image/gif,image/jpeg" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.UploadImage3, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, "Description", new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-md-12" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group button_position">
+                <input type="submit" value="Add Product" class="btn btn-primary btnposition float-right" />
+            </div>
+        </div>
+
+    }
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
