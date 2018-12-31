@@ -165,6 +165,15 @@
             startFrom.change(function () {
                 var sd = sdate.val();
                 var newsd = startFrom.val();
+                if (endTo.val() != "") {
+                    var dif = dateDiffInDays( new Date(newsd),new Date(endTo.val()));
+                    if (dif < 0) {
+                        alert("Start Date cannot be greater than End Date");
+                        startFrom.val("");
+                        endTo.val("");
+                        return false;
+                    }
+                }
                 var diff = dateDiffInDays(new Date(sd), new Date(newsd));
                 if (diff > 0) {
                     var productId = pId.val();
@@ -178,6 +187,15 @@
             endTo.change(function () {
                 var sd = edate.val();
                 var newsd = endTo.val();
+                if (startFrom.val() != "") {
+                    var dif = dateDiffInDays(new Date(startFrom.val()), new Date(newsd));
+                    if (dif < 0) {
+                        alert("Start Date cannot be greater than End Date");
+                        startFrom.val("");
+                        endTo.val("");
+                        return false;
+                    }
+                }
                 var diff = dateDiffInDays(new Date(sd), new Date(newsd));
                 if (diff < 0) {
                     var productId = pId.val();

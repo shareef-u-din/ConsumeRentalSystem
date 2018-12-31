@@ -191,6 +191,13 @@
                     forward = 0;
                     return false;
                 }
+                var dif = dateDiffInDays(new Date(date1), new Date(oldEndDate.val()));
+
+                if (dif < 0) {
+                    alert("Start Date cannot be greater than End Date");
+                    newStartDate.val("");
+                    return false;
+                }
                 var oldsdate = oldStartDate.val();
                 var d = dateDiffInDays(new Date(oldsdate), new Date(date1));
                 if (d < 0) {
@@ -206,6 +213,7 @@
                     forward = 0;
                     return false;
                 }
+
                 var date2 = newEndDate.val();
                 var oldsdate = oldStartDate.val();
                 var oldedate = oldEndDate.val();
